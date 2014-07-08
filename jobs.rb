@@ -1,5 +1,5 @@
 class Jobs
 	def self.permute(jobs=nil)
-		jobs
+		jobs.keys
 	end
 end
