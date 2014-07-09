@@ -44,7 +44,27 @@ describe Jobs do
 	  expect(sequence).to include('a', 'b', 'c')
 	end
 
-	it "" do
+	it "returns a sequence that follows the contraints imposed on it" do
+		contraints = {'a' => nil, 'b' => 'c', 'c' => nil}
+		sequence = Jobs.permute(constraints)
+	  expect(sequence).to follow_constraints(constraints)
+	end
 
+	it "returns a sequence that follows the contraints imposed on it (2)" do
+  	constraints = {'a' => nil, 'b' => 'c', 'c' => 'f', 'd' => 'a', 'e' => 'b', 'f' => nil}
+		sequence = Jobs.permute(constraints)
+	  expect(sequence).to follow_constraints(constraints)
+	end
+
+	it "throws an error when the constraints contain a job which follows itself" do
+  	constraints = {'a' => nil, 'b' => nil, 'c' => 'c'}
+		sequence = Jobs.permute(constraints)
+		expect(sequence).to raise_error(SelfDependentConstraintsError)
+	end
+
+	it "throws an error when the constraints contain circular depedencies" do
+  	constraints = {'a' => nil, 'b' => 'c', 'c' => 'f', 'd' => 'a', 'e' => nil, 'f' => 'b'}
+		sequence = Jobs.permute(constraints)
+		expect(sequence).to raise_error(CircularConstraintsError)
 	end
 end
