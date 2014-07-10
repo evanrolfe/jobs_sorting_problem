@@ -29,6 +29,7 @@ describe "follow_constraints matcher" do
 end
 
 describe Jobs do
+
 	it "returns an empty sequence when no jobs are passed to it" do
 		sequence = Jobs.permute()
 	  expect(sequence).to eq('')
@@ -57,7 +58,7 @@ describe Jobs do
 	end
 
 	it "throws an error when the constraints contain a job which follows itself" do
-  	constraints = [['a', nil], ['b', nil], ['c', 'c']]}
+  	constraints = [['a', nil], ['b', nil], ['c', 'c']]
 		sequence = Jobs.permute(constraints)
 		expect(sequence).to raise_error(SelfDependentConstraintsError)
 	end
