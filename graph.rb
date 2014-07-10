@@ -1,9 +1,9 @@
 class Graph
 	attr_reader :edges, :vertices
 
-	def initialize(num_vertices, edges)
+	def initialize(vertices, edges)
 		@edges = edges
-		@vertices = (1..num_vertices).to_a.map{|v| v }
+		@vertices = vertices
 	end
 
 	def delete_vertex(v)
