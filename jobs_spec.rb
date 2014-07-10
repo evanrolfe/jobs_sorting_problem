@@ -17,13 +17,13 @@ describe "follow_constraints matcher" do
 
 	it "returns true if a sequence follows the given constraints" do
   	sequence = ['a', 'f', 'd', 'c', 'b', 'e']
-  	constraints = {'a' => nil, 'b' => 'c', 'c' => 'f', 'd' => 'a', 'e' => 'b', 'f' => nil}
+  	constraints = [['a', nil], ['b', 'c'], ['c', 'f'], ['d', 'a'], ['e', 'b'], ['f', nil]]
   	expect(sequence).to follow_constraints(constraints)
 	end
 
 	it "returns false if a sequence does not follows the given constraints" do
   	sequence = ['a', 'f', 'd', 'c', 'b', 'e']
-  	constraints = {'a' => 'f', 'b' => 'c', 'c' => 'f', 'd' => 'a', 'e' => 'b', 'f' => nil}
+  	constraints = [['a', 'f'], ['b', 'c'], ['c', 'f'], ['d', 'a'], ['e', 'b'], ['f', nil]]
   	expect(sequence).to_not follow_constraints(constraints)
 	end
 end
@@ -40,30 +40,30 @@ describe Jobs do
 	end
 
 	it "returns any sequence when jobs are passed to it with no conditions on the ordering" do
-		sequence = Jobs.permute({'a' => nil, 'b' => nil, 'c' => nil})
+		sequence = Jobs.permute([['a', nil], ['b', nil], ['c', nil]])
 	  expect(sequence).to include('a', 'b', 'c')
 	end
 
 	it "returns a sequence that follows the constraints imposed on it" do
-		constraints = {'a' => nil, 'b' => 'c', 'c' => nil}
+		constraints = [['a', nil], ['b', 'c'], ['c', nil]]
 		sequence = Jobs.permute(constraints)
 	  expect(sequence).to follow_constraints(constraints)
 	end
 
 	it "returns a sequence that follows the constraints imposed on it (2)" do
-  	constraints = {'a' => nil, 'b' => 'c', 'c' => 'f', 'd' => 'a', 'e' => 'b', 'f' => nil}
+  	constraints = [['a', nil], ['b', 'c'], ['c', 'f'], ['d', 'a'], ['e', 'b'], ['f', nil]]
 		sequence = Jobs.permute(constraints)
 	  expect(sequence).to follow_constraints(constraints)
 	end
 
 	it "throws an error when the constraints contain a job which follows itself" do
-  	constraints = {'a' => nil, 'b' => nil, 'c' => 'c'}
+  	constraints = [['a', nil], ['b', nil], ['c', 'c']]}
 		sequence = Jobs.permute(constraints)
 		expect(sequence).to raise_error(SelfDependentConstraintsError)
 	end
 
 	it "throws an error when the constraints contain circular depedencies" do
-  	constraints = {'a' => nil, 'b' => 'c', 'c' => 'f', 'd' => 'a', 'e' => nil, 'f' => 'b'}
+  	constraints = [['a', nil], ['b', 'c'], ['c', 'f'], ['d', 'a'], ['e', nil], ['f', 'b']]
 		sequence = Jobs.permute(constraints)
 		expect(sequence).to raise_error(CircularConstraintsError)
 	end
