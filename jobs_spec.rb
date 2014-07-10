@@ -59,13 +59,11 @@ describe Jobs do
 
 	it "throws an error when the constraints contain a job which follows itself" do
   	constraints = [['a', nil], ['b', nil], ['c', 'c']]
-		sequence = Jobs.permute(constraints)
-		expect(sequence).to raise_error(SelfDependentConstraintsError)
+		expect { Jobs.permute(constraints) }.to raise_error(ArgumentError)
 	end
 
 	it "throws an error when the constraints contain circular depedencies" do
   	constraints = [['a', nil], ['b', 'c'], ['c', 'f'], ['d', 'a'], ['e', nil], ['f', 'b']]
-		sequence = Jobs.permute(constraints)
-		expect(sequence).to raise_error(CircularConstraintsError)
+		expect { Jobs.permute(constraints) }.to raise_error(ArgumentError)
 	end
 end
