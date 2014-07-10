@@ -3,28 +3,17 @@ class Graph
 
 	def initialize(num_vertices, edges)
 		@edges = edges
-		@vertices = (1..num_vertices).to_a.map{|x| x }
+		@vertices = (1..num_vertices).to_a.map{|v| v }
 	end
 
-	def delete_vertex(id)
-		@vertices.delete(id)
-		@edges.reject!{ |edge| edge[0] == id || edge[1] == id }
+	def delete_vertex(v)
+		@vertices.delete(v)
+		@edges.reject!{ |v_start, v_end| v_start == v || v_end == v }
 	end
 
 	def non_terminal_vertices
-		non_terminal_vertices = []
-
-		@vertices.each do |v|
-
-			vertex_is_non_terminal = true
-
-			@edges.each do |edge|
-				vertex_is_non_terminal = false if edge[1] == v	#If this edge terminates at the current vertex
-			end
-
-			non_terminal_vertices << v if vertex_is_non_terminal
+		return @vertices.select do |v|
+			@edges.select{ |v_start, v_end| v_end == v }.length == 0
 		end
-
-		return non_terminal_vertices
 	end
 end
