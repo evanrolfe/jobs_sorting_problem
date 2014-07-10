@@ -31,12 +31,12 @@ end
 describe Jobs do
 	it "returns an empty sequence when no jobs are passed to it" do
 		sequence = Jobs.permute()
-	  expect(sequence).to be_nil
+	  expect(sequence).to eq('')
 	end
 
 	it "returns a single sequence when only one job is passed to it" do
 		sequence = Jobs.permute({'a' => nil})
-	  expect(sequence).to equal(['a'])
+	  expect(sequence).to eq(['a'])
 	end
 
 	it "returns any sequence when jobs are passed to it with no conditions on the ordering" do
@@ -44,13 +44,13 @@ describe Jobs do
 	  expect(sequence).to include('a', 'b', 'c')
 	end
 
-	it "returns a sequence that follows the contraints imposed on it" do
-		contraints = {'a' => nil, 'b' => 'c', 'c' => nil}
+	it "returns a sequence that follows the constraints imposed on it" do
+		constraints = {'a' => nil, 'b' => 'c', 'c' => nil}
 		sequence = Jobs.permute(constraints)
 	  expect(sequence).to follow_constraints(constraints)
 	end
 
-	it "returns a sequence that follows the contraints imposed on it (2)" do
+	it "returns a sequence that follows the constraints imposed on it (2)" do
   	constraints = {'a' => nil, 'b' => 'c', 'c' => 'f', 'd' => 'a', 'e' => 'b', 'f' => nil}
 		sequence = Jobs.permute(constraints)
 	  expect(sequence).to follow_constraints(constraints)
