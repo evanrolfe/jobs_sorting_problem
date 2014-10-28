@@ -1,7 +1,7 @@
-require './graph'
+require 'graph'
 
 class Jobs
-	def self.permute(jobs_constraints=nil)
+	def self.run(jobs_constraints=nil)
 		return '' if jobs_constraints.nil?		#Return emptry string if no jobs are given
 
 		#1. Check no jobs follow themselves

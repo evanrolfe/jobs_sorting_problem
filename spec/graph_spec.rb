@@ -1,5 +1,4 @@
-require 'pry'
-require './graph'
+require 'spec_helper'
 
 describe Graph do
 	before :each do
