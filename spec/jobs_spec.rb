@@ -11,17 +11,16 @@ end
 
 #A test for a test
 describe "follow_constraints matcher" do
+  let(:sequence) { ['a', 'f', 'd', 'c', 'b', 'e'] }
 
-  it "returns true if a sequence follows the given constraints" do
-    sequence = ['a', 'f', 'd', 'c', 'b', 'e']
-    constraints = [['a', nil], ['b', 'c'], ['c', 'f'], ['d', 'a'], ['e', 'b'], ['f', nil]]
-    expect(sequence).to follow_constraints(constraints)
+  context 'sequence follows the given constraints' do
+    let(:constraints) { [['a', nil], ['b', 'c'], ['c', 'f'], ['d', 'a'], ['e', 'b'], ['f', nil]] }
+    it { expect(sequence).to follow_constraints(constraints) }
   end
 
-  it "returns false if a sequence does not follows the given constraints" do
-    sequence = ['a', 'f', 'd', 'c', 'b', 'e']
-    constraints = [['a', 'f'], ['b', 'c'], ['c', 'f'], ['d', 'a'], ['e', 'b'], ['f', nil]]
-    expect(sequence).to_not follow_constraints(constraints)
+  context 'sequence does not follows the given constraints' do
+    let(:constraints) { [['a', 'f'], ['b', 'c'], ['c', 'f'], ['d', 'a'], ['e', 'b'], ['f', nil]] }
+    it { expect(sequence).not_to follow_constraints(constraints) }
   end
 end
 

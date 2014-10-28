@@ -1,42 +1,52 @@
 describe Graph do
-  before :each do
-    edges = [['a','d'],['b','e'],['c','b'],['f','c']]
-    vertices = ['a','b','c','d','e','f']
-    @graph = Graph.new(vertices, edges)
-  end
+  let(:edges) { [['a','d'],['b','e'],['c','b'],['f','c']] }
+  let(:vertices) { ['a','b','c','d','e','f'] }
+  let(:graph) { Graph.new(vertices, edges) }
 
-  it "instantiates the graph with edges" do
-    expect(@graph.edges).to eq [['a','d'],['b','e'],['c','b'],['f','c']]
-  end
+  describe '#edges' do
+    subject { graph.edges }
 
-  it "instantiates the graph with vertices" do
-    expect(@graph.vertices).to eq ['a','b','c','d','e','f']
-  end
-
-  it "returns vertices with no incoming edge" do
-    vertices = @graph.non_terminal_vertices
-    expect(vertices).to eq ['a','f']
-  end
-
-  it "returns vertices with no incoming edge (2)" do
-    @graph.delete_vertex('a')
-    @graph.delete_vertex('f')
-    @graph.delete_vertex('d')
-    vertices = @graph.non_terminal_vertices
-    expect(vertices).to eq ['c']
-  end
-
-  describe "deleting a vertex" do
-    before :each do
-      @graph.delete_vertex('c')
+    context 'on instantiation' do
+      it { should == [['a','d'],['b','e'],['c','b'],['f','c']] }
     end
 
-    it "removes a vertex from the vertices array " do
-      expect(@graph.vertices).to eq ['a','b','d','e','f']
+    context 'after deleting a vertex' do
+      before do
+        graph.delete_vertex('c')
+      end
+      it { should == [['a','d'],['b','e']] }
+    end
+  end
+
+  describe '#vertices' do
+    subject { graph.vertices }
+
+    context 'on instantiation' do
+      it { should == ['a','b','c','d','e','f'] }
     end
 
-    it "removes the vertex's corresponding edges" do
-      expect(@graph.edges).to eq [['a','d'],['b','e']]
+    context 'after deleting a vertex' do
+      before do
+        graph.delete_vertex('c')
+      end
+      it { should == ['a','b','d','e','f'] }
+    end
+  end
+
+  describe '#non_terminal_vertices' do
+    subject { graph.non_terminal_vertices }
+
+    context 'on instantiation' do
+      it { should == ['a','f'] }
+    end
+
+    context 'after deleting some vertices' do
+      before do
+        graph.delete_vertex('a')
+        graph.delete_vertex('f')
+        graph.delete_vertex('d')
+      end
+      it { should == ['c'] }
     end
   end
 end
